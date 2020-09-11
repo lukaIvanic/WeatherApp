@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather app</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="Title">
+      <h1>Weather app</h1>
+    </div>
+    
+    <a href="index.html">Index</a>
+    <a href="list.html">List</a>
+    <a href="map.html">Map</a>
+    <br />
+    <br />
+    <h3 id="Latitude">Loading latitude...</h3>
+    <h3 id="Longitude">Loading longitude...</h3>
+    <button id="SendButton">Send</button>
+    <span id="SendingStatus"></span>
+    <p id="weatherinfo" style="display: none">
+      The weather status here at <span id="locationspan">loading...</span> is
+      <span id="summaryspan">loading...</span></br> with a temperature of
+      <span id="temperaturespan">loading...</span>&deg; C.
+    </p>
+    <script src="script.js"></script>
+  </body>
+</html>

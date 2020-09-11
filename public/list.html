@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>List of positions</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="Title">
+      <h1>Weather app</h1>
+    </div>
+    <div style="margin: 0 auto; width: 225px; margin-bottom: 40px">
+      <a href="index.html">Index</a>
+      <a href="list.html">List</a>
+      <a href="map.html">Map</a>
+    </div>
+
+    <table style="margin: 0 auto">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Time</th>
+          <th>Weather status</th>
+          <th>Temperature</th>
+        </tr>
+      </thead>
+      <tbody id="table"></tbody>
+    </table>
+    <script src="querydb.js"></script>
+  </body>
+</html>
