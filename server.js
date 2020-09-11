@@ -14,9 +14,11 @@ const database = new db("Locations.db");
 
 database.loadDatabase();
 
+const port = process.env.PORT || 3000;
+
 // turning the server on
-app.listen(3400, () => {
-  console.log("Listening at 3400");
+app.listen(port, () => {
+  console.log(`Starting server at ${port}.`);
 });
 
 // setting up static files
