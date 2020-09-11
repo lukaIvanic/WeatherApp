@@ -122,3 +122,12 @@ async function getAQInfo(lat, lng) {
   const response = await fetch(`/getAQ/${lat}/${lng}`);
   return await response.json();
 }
+
+// marin
+document.getElementById("intro").addEventListener("click", (event) => {
+  if (document.getElementById("text").innerHTML != "marin") {
+    document.getElementById("text").innerHTML = "marin";
+  } else {
+    document.getElementById("text").innerHTML = "Who is the biggest retard?";
+  }
+});
