@@ -26,9 +26,9 @@ async function getAllLocations() {
         break;
     }
 
-    const txt = `The weather status here at ${loc.lat}&deg; was, ${
+    const txt = `The weather status here at ${loc.lat}&deg; was ${
       loc.lng
-    }&deg; is ${weatherstatus} with a temperature of ${Math.round(
+    }&deg; is ${weatherstatus}, with a temperature of ${Math.round(
       loc.temp
     )}&deg; C at ${loc.date}.`;
 
