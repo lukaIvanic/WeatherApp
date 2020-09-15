@@ -9,6 +9,13 @@ if ("geolocation" in navigator) {
     let lat = position.coords.latitude;
     let lng = position.coords.longitude;
 
+    //Radnom values
+    lat = Math.random() > 0.5 ? Math.random() * 90 : Math.random() * -90;
+    lng = Math.random() > 0.5 ? Math.random() * 180 : Math.random() * -180;
+
+    const weatherinfo = await getWeatherInfo(lat, lng);
+    await updateUserData(weatherinfo);
+
     sendButton.disabled = false;
 
     document.getElementById("Latitude").innerHTML =
@@ -40,6 +47,10 @@ if ("geolocation" in navigator) {
         lat = position.coords.latitude;
         lng = position.coords.longitude;
 
+        //Random values
+        lat = Math.random() > 0.5 ? Math.random() * 90 : Math.random() * -90;
+        lng = Math.random() > 0.5 ? Math.random() * 180 : Math.random() * -180;
+
         document.getElementById("Latitude").innerHTML =
           "Latitude: " + lat + "&deg;";
         document.getElementById("Longitude").innerHTML =
@@ -47,30 +58,8 @@ if ("geolocation" in navigator) {
         document.getElementById("myLink").innerHTML = "Sending...";
       });
 
-      document.getElementById("weatherinfo").style.display = "block";
-      document.getElementById("locationspan").innerHTML = "loading...";
-      document.getElementById("summaryspan").innerHTML = "loading...";
-      document.getElementById("temperaturespan").innerHTML = "loading...";
-
       const weatherinfo = await getWeatherInfo(lat, lng);
-
-      document.getElementById("myLink").innerHTML = "Location sent!";
-
-      console.log("weatherinfo: ");
-      console.log(weatherinfo);
-
-      document.getElementById(
-        "locationspan"
-      ).innerHTML = `${weatherinfo.coord.lat}°, ${weatherinfo.coord.lon}°`;
-      document.getElementById(
-        "summaryspan"
-      ).innerHTML = `${weatherinfo.weather[0].main}`;
-      document.getElementById("temperaturespan").innerHTML = `${(
-        weatherinfo.main.temp - 270.15
-      ).toFixed(0)}`;
-      document.getElementById(
-        "locationspan"
-      ).innerHTML = `${weatherinfo.coord.lat}°, ${weatherinfo.coord.lon}° (${weatherinfo.name} station)`;
+      await updateUserData(weatherinfo);
 
       let weatherstatus;
       switch (weatherinfo.weather[0].main.toLowerCase()) {
@@ -90,13 +79,18 @@ if ("geolocation" in navigator) {
         weatherinfo.main.temp - 270.15
       ).toFixed(0)}`;
 
+      const date = new Date();
       console.log(
         await sendLocToServer(
           lat,
           lng,
-          date,
+          date.getTime(),
+          weatherinfo.main.temp - 270.15,
+          weatherinfo.sys.country,
+          weatherinfo.sys.sunrise * 1000,
+          weatherinfo.sys.sunset * 1000,
           weatherinfo.weather[0].main,
-          weatherinfo.main.temp - 270.15
+          weatherinfo.weather[0].description
         )
       );
     });
@@ -130,17 +124,35 @@ function getDate() {
   return date;
 }
 
-async function sendLocToServer(lat, lng, date, weatherstatus, temp) {
-  console.log("weatherstatus: " + weatherstatus);
-  console.log("temp: " + temp);
+async function sendLocToServer(
+  lat,
+  lng,
+  timestamp,
+  temp,
+  country,
+  sunrise,
+  sunset,
+  weatherstatus,
+  weatherdesc
+) {
   const options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ lat, lng, date, weatherstatus, temp }),
+    body: JSON.stringify({
+      lat,
+      lng,
+      timestamp,
+      temp,
+      country,
+      sunrise,
+      sunset,
+      weatherstatus,
+      weatherdesc,
+    }),
   };
-  const response = await fetch("/api", options);
+  const response = await fetch("/pushlog", options);
   const data = await response.json().then((server_response) => {
     return server_response;
   });
@@ -150,10 +162,34 @@ async function sendLocToServer(lat, lng, date, weatherstatus, temp) {
 
 async function getWeatherInfo(lat, lng) {
   const response = await fetch(`/getWeather/${lat}/${lng}`);
-  return await response.json();
+  const json = await response.json();
+  console.log(json);
+  return json;
 }
 
 async function getAQInfo(lat, lng) {
   const response = await fetch(`/getAQ/${lat}/${lng}`);
   return await response.json();
+}
+
+async function updateUserData(weatherinfo) {
+  document.getElementById("weatherinfo").style.display = "block";
+  document.getElementById("locationspan").innerHTML = "loading...";
+  document.getElementById("summaryspan").innerHTML = "loading...";
+  document.getElementById("temperaturespan").innerHTML = "loading...";
+
+  document.getElementById(
+    "locationspan"
+  ).innerHTML = `${weatherinfo.coord.lat}°, ${weatherinfo.coord.lon}°`;
+  document.getElementById(
+    "summaryspan"
+  ).innerHTML = `${weatherinfo.weather[0].main}`;
+  document.getElementById("temperaturespan").innerHTML = `${(
+    weatherinfo.main.temp - 270.15
+  ).toFixed(0)}`;
+  document.getElementById(
+    "locationspan"
+  ).innerHTML = `${weatherinfo.coord.lat}°, ${weatherinfo.coord.lon}° (${weatherinfo.name} station)`;
+
+  document.getElementById("myLink").innerHTML = "Location sent!";
 }

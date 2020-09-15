@@ -9,12 +9,12 @@ const tiles = L.tileLayer(tileURL, { attribution });
 tiles.addTo(mymap);
 
 async function getAllLocations() {
-  const response = await fetch("/api");
+  const response = await fetch("/queryDB");
   const data = await response.json();
 
   for (loc of data) {
     let weatherstatus;
-    switch (loc.weatherstatus.toLowerCase()) {
+    switch (loc["Weather status"].toLowerCase()) {
       case "rain":
         weatherstatus = "rainy";
         break;
@@ -22,18 +22,18 @@ async function getAllLocations() {
         weatherstatus = "cloudy";
         break;
       default:
-        weatherstatus = loc.weatherstatus.toLowerCase();
+        weatherstatus = loc["Weather status"].toLowerCase();
         break;
     }
 
-    const txt = `The weather status here at ${loc.lat}&deg; was ${
-      loc.lng
+    const txt = `The weather status here at ${loc.Latitude}&deg; was ${
+      loc.Longitude
     }&deg; is ${weatherstatus}, with a temperature of ${Math.round(
-      loc.temp
-    )}&deg; C at ${loc.date}.`;
+      loc.Temperature
+    )}&deg; C at ${loc.Timestamp}.`;
 
     // Marker
-    let marker = L.marker([loc.lat, loc.lng]).addTo(mymap);
+    let marker = L.marker([loc.Latitude, loc.Longitude]).addTo(mymap);
     marker.bindPopup(txt);
   }
 }
