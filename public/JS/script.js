@@ -1,5 +1,6 @@
 let sendButton = document.getElementById("SendButton");
 let sendingStatus = document.getElementById("SendingStatus");
+let randomLoc = false;
 sendButton.disabled = true;
 
 if ("geolocation" in navigator) {
@@ -10,8 +11,10 @@ if ("geolocation" in navigator) {
     let lng = position.coords.longitude;
 
     //Radnom values
-    lat = Math.random() > 0.5 ? Math.random() * 90 : Math.random() * -90;
-    lng = Math.random() > 0.5 ? Math.random() * 180 : Math.random() * -180;
+    if (randomLoc) {
+      lat = Math.random() > 0.5 ? Math.random() * 90 : Math.random() * -90;
+      lng = Math.random() > 0.5 ? Math.random() * 180 : Math.random() * -180;
+    }
 
     const weatherinfo = await getWeatherInfo(lat, lng);
     await updateUserData(weatherinfo);
@@ -48,8 +51,11 @@ if ("geolocation" in navigator) {
         lng = position.coords.longitude;
 
         //Random values
-        lat = Math.random() > 0.5 ? Math.random() * 90 : Math.random() * -90;
-        lng = Math.random() > 0.5 ? Math.random() * 180 : Math.random() * -180;
+        if (randomLoc) {
+          lat = Math.random() > 0.5 ? Math.random() * 90 : Math.random() * -90;
+          lng =
+            Math.random() > 0.5 ? Math.random() * 180 : Math.random() * -180;
+        }
 
         document.getElementById("Latitude").innerHTML =
           "Latitude: " + lat + "&deg;";
@@ -187,9 +193,19 @@ async function updateUserData(weatherinfo) {
   document.getElementById("temperaturespan").innerHTML = `${(
     weatherinfo.main.temp - 270.15
   ).toFixed(0)}`;
+
+  let station_name = "unknown";
+  if (weatherinfo.name !== "") {
+    station_name = weatherinfo.name;
+  }
+
   document.getElementById(
     "locationspan"
-  ).innerHTML = `${weatherinfo.coord.lat}°, ${weatherinfo.coord.lon}° (${weatherinfo.name} station)`;
+  ).innerHTML = `${weatherinfo.coord.lat}°, ${weatherinfo.coord.lon}° (${station_name} station)`;
 
   document.getElementById("myLink").innerHTML = "Location sent!";
+}
+
+function toggle() {
+  randomLoc = !randomLoc;
 }
