@@ -4,7 +4,9 @@ let randomLoc = false;
 sendButton.disabled = true;
 
 if ("geolocation" in navigator) {
+  document.getElementById("Latitude").innerHTML = "Before get current position";
   navigator.geolocation.getCurrentPosition(async (position) => {
+    document.getElementById("Latitude").innerHTML = "Started getting position";
     console.log(position);
 
     let lat = position.coords.latitude;
