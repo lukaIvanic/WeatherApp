@@ -96,7 +96,7 @@ p {
 
 .switch{
   position: absolute;
-  margin-bottom: 16px;
+  bottom: 16px;
   margin-left: 16px;
   width: 60px;
   height: 34px;
@@ -105,7 +105,7 @@ p {
 .random_loc{
   position: absolute;
   font-size: 1.5em;
-  margin-bottom: 20px;
+  bottom: 14px;
   margin-left: 86px;
 }
 
