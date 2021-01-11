@@ -1,6 +1,6 @@
 # WeatherApp
 
-Test out the app: https://weather-app-luka-ivanic.herokuapp.com/map.html
+Test out the app: https://weather-app-luka-ivanic.herokuapp.com
 
 NodeJS, MySQL, Javascript.
 
