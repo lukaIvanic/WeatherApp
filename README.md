@@ -1,5 +1,7 @@
 # WeatherApp
 
+Test out the app: https://weather-app-luka-ivanic.herokuapp.com/map.html
+
 NodeJS, MySQL, Javascript.
 
 API used: https://openweathermap.org/api
