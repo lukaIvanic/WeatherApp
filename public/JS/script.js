@@ -62,10 +62,11 @@ if ("geolocation" in navigator) {
         document.getElementById("Longitude").innerHTML =
           "\nLongitude: " + lng + "&deg;";
         document.getElementById("myLink").innerHTML = "Sending...";
+		
+		const weatherinfo = await getWeatherInfo(lat, lng);
+      await updateUserData(weatherinfo);
       });
 
-      const weatherinfo = await getWeatherInfo(lat, lng);
-      await updateUserData(weatherinfo);
 
       let weatherstatus;
       switch (weatherinfo.weather[0].main.toLowerCase()) {
